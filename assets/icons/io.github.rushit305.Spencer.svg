@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="SPENCER terminal icon">
+  <defs>
+    <linearGradient id="terminal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1d2533"/>
+      <stop offset="1" stop-color="#11151d"/>
+    </linearGradient>
+  </defs>
+  <rect x="18" y="18" width="220" height="220" rx="42" fill="url(#terminal)"/>
+  <rect x="18" y="18" width="220" height="220" rx="42" fill="none" stroke="#5eead4" stroke-width="8"/>
+  <path d="M73 90l42 38-42 38" fill="none" stroke="#f8fafc" stroke-linecap="round" stroke-linejoin="round" stroke-width="18"/>
+  <path d="M132 169h52" fill="none" stroke="#5eead4" stroke-linecap="round" stroke-width="18"/>
+</svg>

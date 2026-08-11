@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-package:
+    name: Build, test, validate, and package
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake ninja-build pkg-config libgtk-4-dev \
+            desktop-file-utils appstream appstream-compose
+      - name: Validate Linux application metadata
+        run: |
+          desktop-file-validate packaging/linux/io.github.rushit305.Spencer.desktop
+          appstreamcli validate --no-net packaging/linux/io.github.rushit305.Spencer.metainfo.xml
+      - name: Configure release build
+        run: cmake --preset release
+      - name: Build release target
+        run: cmake --build --preset release
+      - name: Run tests
+        run: ctest --preset release --output-on-failure
+      - name: Build Debian package
+        working-directory: build/release
+        run: cpack -G DEB
+      - name: Upload verified package
+        uses: actions/upload-artifact@v4
+        with:
+          name: spencer-debian-package
+          path: build/release/*.deb
+          if-no-files-found: error
+
+  static-analysis:
+    name: Static analysis
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Install analysis dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential cmake ninja-build pkg-config libgtk-4-dev clang-tidy
+      - name: Configure debug compilation database
+        run: cmake --preset debug
+      - name: Run clang-tidy
+        run: |
+          clang-tidy -p build/debug \
+            src/config/config.cpp \
+            src/parser/terminal_parser.cpp \
+            src/parser/utf8_decoder.cpp \
+            src/pty/linux_pty.cpp \
+            src/terminal/terminal_state.cpp \
+            src/app/main.cpp

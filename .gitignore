@@ -1,0 +1,22 @@
+# CMake and generated binaries
+/build/
+CMakeCache.txt
+CMakeFiles/
+Testing/
+compile_commands.json
+*.cmake.user
+
+# Packaged artifacts
+*.deb
+*.AppImage
+*.tar.gz
+SHA256SUMS.txt
+
+# Local configuration and logs
+.spencer-config
+spencer.log
+
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store

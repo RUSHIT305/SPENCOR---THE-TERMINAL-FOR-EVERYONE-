@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=SPENCER
+Comment=The Terminal for Everyone
+Exec=spencer
+Icon=io.github.rushit305.Spencer
+Terminal=false
+Categories=System;TerminalEmulator;
+Keywords=terminal;shell;command;pty;
+StartupNotify=true
