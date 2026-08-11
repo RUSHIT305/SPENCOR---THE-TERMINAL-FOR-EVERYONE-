@@ -35,7 +35,7 @@ jobs:
           ctest --preset release --output-on-failure
       - name: Create Debian package and checksum
         run: |
-          cpack --config build/release/CPackConfig.cmake -G DEB
+          cpack --config build/release/CPackConfig.cmake -G DEB --output-dir build/release
       - name: Create AppImage
         env:
           APPIMAGETOOL: ${{ runner.temp }}/appimagetool-x86_64.AppImage
