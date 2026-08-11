@@ -24,15 +24,15 @@ fi
 rm -rf "${appdir}"
 DESTDIR="${appdir}" cmake --install "${build_dir}" --prefix /usr
 mkdir -p "${appdir}/usr/share/icons/hicolor/256x256/apps"
-cp "${root_dir}/assets/icons/io.github.rushit305.Spencer.svg" \
-   "${appdir}/usr/share/icons/hicolor/256x256/apps/io.github.rushit305.Spencer.svg"
+cp "${root_dir}/assets/icons/io.github.rushit305.spencer.svg" \
+   "${appdir}/usr/share/icons/hicolor/256x256/apps/io.github.rushit305.spencer.svg"
 ln -sf "usr/bin/spencer" "${appdir}/AppRun"
-ln -sf "usr/share/applications/io.github.rushit305.Spencer.desktop" \
-       "${appdir}/io.github.rushit305.Spencer.desktop"
-ln -sf "usr/share/icons/hicolor/256x256/apps/io.github.rushit305.Spencer.svg" \
-       "${appdir}/io.github.rushit305.Spencer.svg"
-cp "${appdir}/usr/share/metainfo/io.github.rushit305.Spencer.metainfo.xml" \
-   "${appdir}/usr/share/metainfo/io.github.rushit305.Spencer.appdata.xml"
+ln -sf "usr/share/applications/io.github.rushit305.spencer.desktop" \
+       "${appdir}/io.github.rushit305.spencer.desktop"
+ln -sf "usr/share/icons/hicolor/256x256/apps/io.github.rushit305.spencer.svg" \
+       "${appdir}/io.github.rushit305.spencer.svg"
+cp "${appdir}/usr/share/metainfo/io.github.rushit305.spencer.metainfo.xml" \
+   "${appdir}/usr/share/metainfo/io.github.rushit305.spencer.appdata.xml"
 
 output="${root_dir}/build/SPENCER-${version}-linux-x86_64.AppImage"
 ARCH=x86_64 APPIMAGE_EXTRACT_AND_RUN=1 "${appimagetool}" "${appdir}" "${output}"

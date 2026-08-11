@@ -46,8 +46,8 @@ ctest --preset release --output-on-failure
 The generated `.deb` is placed in `build/release/`. Validate installed metadata before packaging with the following commands.
 
 ```bash
-desktop-file-validate packaging/linux/io.github.rushit305.Spencer.desktop
-appstreamcli validate --no-net packaging/linux/io.github.rushit305.Spencer.metainfo.xml
+desktop-file-validate packaging/linux/io.github.rushit305.spencer.desktop
+appstreamcli validate --no-net packaging/linux/io.github.rushit305.spencer.metainfo.xml
 ```
 
 ## Static analysis

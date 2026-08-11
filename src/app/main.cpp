@@ -24,7 +24,7 @@
 
 namespace {
 
-constexpr std::string_view kApplicationId = "io.github.rushit305.Spencer";
+constexpr std::string_view kApplicationId = "io.github.rushit305.spencer";
 constexpr std::string_view kDefaultTitle = "SPENCER — The Terminal for Everyone";
 
 [[nodiscard]] std::string to_utf8(const std::u32string& text) {

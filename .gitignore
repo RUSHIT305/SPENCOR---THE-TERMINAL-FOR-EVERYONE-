@@ -1,5 +1,6 @@
 # CMake and generated binaries
 /build/
+/.flatpak-builder/
 CMakeCache.txt
 CMakeFiles/
 Testing/

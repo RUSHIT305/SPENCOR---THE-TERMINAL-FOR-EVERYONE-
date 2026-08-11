@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>io.github.rushit305.Spencer</id>
+  <id>io.github.rushit305.spencer</id>
   <name>SPENCER</name>
   <summary>The Terminal for Everyone</summary>
   <metadata_license>MIT</metadata_license>
@@ -9,7 +9,7 @@
     <p>SPENCER is a native Linux terminal emulator that launches the user shell in a POSIX pseudo-terminal and renders a focused terminal grid.</p>
     <p>This initial release provides a tested technical MVP with ANSI styling, Unicode decoding, bounded scrollback, keyboard input, resizing, and a safe shell lifecycle.</p>
   </description>
-  <launchable type="desktop-id">io.github.rushit305.Spencer.desktop</launchable>
+  <launchable type="desktop-id">io.github.rushit305.spencer.desktop</launchable>
   <provides>
     <binary>spencer</binary>
   </provides>
@@ -17,7 +17,7 @@
     <category>System</category>
     <category>TerminalEmulator</category>
   </categories>
-  <icon type="stock">io.github.rushit305.Spencer</icon>
+  <icon type="stock">io.github.rushit305.spencer</icon>
   <url type="homepage">https://github.com/RUSHIT305/SPENCOR---THE-TERMINAL-FOR-EVERYONE-</url>
   <url type="bugtracker">https://github.com/RUSHIT305/SPENCOR---THE-TERMINAL-FOR-EVERYONE-/issues</url>
   <developer id="io.github.rushit305">

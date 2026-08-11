@@ -1,4 +1,4 @@
-app-id: io.github.rushit305.Spencer
+app-id: io.github.rushit305.spencer
 runtime: org.gnome.Platform
 runtime-version: '48'
 sdk: org.gnome.Sdk

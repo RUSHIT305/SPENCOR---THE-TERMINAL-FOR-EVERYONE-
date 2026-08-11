@@ -81,11 +81,11 @@ install(TARGETS spencer spencer_core
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-install(FILES packaging/linux/io.github.rushit305.Spencer.desktop
+install(FILES packaging/linux/io.github.rushit305.spencer.desktop
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
-install(FILES packaging/linux/io.github.rushit305.Spencer.metainfo.xml
+install(FILES packaging/linux/io.github.rushit305.spencer.metainfo.xml
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo)
-install(FILES assets/icons/io.github.rushit305.Spencer.svg
+install(FILES assets/icons/io.github.rushit305.spencer.svg
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps)
 
 set(CPACK_PACKAGE_NAME "spencer")
