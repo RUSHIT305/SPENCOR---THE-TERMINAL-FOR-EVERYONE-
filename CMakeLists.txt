@@ -87,6 +87,8 @@ install(FILES packaging/linux/io.github.rushit305.spencer.metainfo.xml
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo)
 install(FILES assets/icons/io.github.rushit305.spencer.svg
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps)
+install(FILES assets/icons/io.github.rushit305.spencer.png
+  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/256x256/apps)
 
 set(CPACK_PACKAGE_NAME "spencer")
 set(CPACK_PACKAGE_VENDOR "SPENCER contributors")

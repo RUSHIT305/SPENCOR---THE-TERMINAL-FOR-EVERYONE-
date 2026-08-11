@@ -23,14 +23,11 @@ fi
 
 rm -rf "${appdir}"
 DESTDIR="${appdir}" cmake --install "${build_dir}" --prefix /usr
-mkdir -p "${appdir}/usr/share/icons/hicolor/256x256/apps"
-cp "${root_dir}/assets/icons/io.github.rushit305.spencer.svg" \
-   "${appdir}/usr/share/icons/hicolor/256x256/apps/io.github.rushit305.spencer.svg"
 ln -sf "usr/bin/spencer" "${appdir}/AppRun"
 ln -sf "usr/share/applications/io.github.rushit305.spencer.desktop" \
        "${appdir}/io.github.rushit305.spencer.desktop"
-ln -sf "usr/share/icons/hicolor/256x256/apps/io.github.rushit305.spencer.svg" \
-       "${appdir}/io.github.rushit305.spencer.svg"
+ln -sf "usr/share/icons/hicolor/256x256/apps/io.github.rushit305.spencer.png" \
+       "${appdir}/io.github.rushit305.spencer.png"
 cp "${appdir}/usr/share/metainfo/io.github.rushit305.spencer.metainfo.xml" \
    "${appdir}/usr/share/metainfo/io.github.rushit305.spencer.appdata.xml"
 
