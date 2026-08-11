@@ -1,6 +1,6 @@
 app-id: io.github.rushit305.spencer
 runtime: org.gnome.Platform
-runtime-version: '48'
+runtime-version: '50'
 sdk: org.gnome.Sdk
 command: spencer
 # The metainfo file is validated separately; this avoids a local appstreamcli compose path-resolution defect.
@@ -8,6 +8,7 @@ appstream-compose: false
 cleanup:
   - /share/icons/hicolor/scalable/apps
 finish-args:
+  - --share=ipc
   - --share=network
   - --socket=fallback-x11
   - --socket=wayland
