@@ -5,6 +5,8 @@ sdk: org.gnome.Sdk
 command: spencer
 # The metainfo file is validated separately; this avoids a local appstreamcli compose path-resolution defect.
 appstream-compose: false
+cleanup:
+  - /share/icons/hicolor/scalable/apps
 finish-args:
   - --share=network
   - --socket=fallback-x11
