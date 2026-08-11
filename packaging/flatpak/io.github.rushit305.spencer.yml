@@ -3,6 +3,8 @@ runtime: org.gnome.Platform
 runtime-version: '48'
 sdk: org.gnome.Sdk
 command: spencer
+# The metainfo file is validated separately; this avoids a local appstreamcli compose path-resolution defect.
+appstream-compose: false
 finish-args:
   - --share=network
   - --socket=fallback-x11
