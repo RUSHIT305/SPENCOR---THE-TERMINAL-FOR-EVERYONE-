@@ -8,10 +8,11 @@ set -euo pipefail
 root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 build_dir="${1:-"${root_dir}/build/release"}"
 appdir="${root_dir}/build/AppDir"
-version="$(grep -E '^project\(SPENCER' "${root_dir}/CMakeLists.txt" >/dev/null && sed -n 's/.*VERSION \([0-9][0-9.]*\).*/\1/p' "${root_dir}/CMakeLists.txt" | head -1)"
-version="${version:-0.1.0}"
+# The tag/release workflow supplies SPENCER_VERSION for later releases.
+version="${SPENCER_VERSION:-0.1.0}"
 
-if ! command -v appimagetool >/dev/null 2>&1; then
+appimagetool="${APPIMAGETOOL:-appimagetool}"
+if ! command -v "${appimagetool}" >/dev/null 2>&1; then
   echo "appimagetool is required to create an AppImage; no artifact was produced." >&2
   exit 2
 fi
@@ -25,11 +26,14 @@ DESTDIR="${appdir}" cmake --install "${build_dir}" --prefix /usr
 mkdir -p "${appdir}/usr/share/icons/hicolor/256x256/apps"
 cp "${root_dir}/assets/icons/io.github.rushit305.Spencer.svg" \
    "${appdir}/usr/share/icons/hicolor/256x256/apps/io.github.rushit305.Spencer.svg"
+ln -sf "usr/bin/spencer" "${appdir}/AppRun"
 ln -sf "usr/share/applications/io.github.rushit305.Spencer.desktop" \
        "${appdir}/io.github.rushit305.Spencer.desktop"
 ln -sf "usr/share/icons/hicolor/256x256/apps/io.github.rushit305.Spencer.svg" \
        "${appdir}/io.github.rushit305.Spencer.svg"
+cp "${appdir}/usr/share/metainfo/io.github.rushit305.Spencer.metainfo.xml" \
+   "${appdir}/usr/share/metainfo/io.github.rushit305.Spencer.appdata.xml"
 
 output="${root_dir}/build/SPENCER-${version}-linux-x86_64.AppImage"
-ARCH=x86_64 appimagetool "${appdir}" "${output}"
+ARCH=x86_64 APPIMAGE_EXTRACT_AND_RUN=1 "${appimagetool}" "${appdir}" "${output}"
 printf 'Created %s\n' "${output}"

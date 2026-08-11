@@ -1,0 +1,23 @@
+app-id: io.github.rushit305.Spencer
+runtime: org.gnome.Platform
+runtime-version: '48'
+sdk: org.gnome.Sdk
+command: spencer
+finish-args:
+  - --share=network
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+  - --filesystem=host
+  - --talk-name=org.freedesktop.Flatpak
+modules:
+  - name: spencer
+    buildsystem: simple
+    build-commands:
+      - cmake -S . -B _flatpak_build -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=/app
+      - cmake --build _flatpak_build
+      - cmake --install _flatpak_build
+    sources:
+      - type: archive
+        path: ../../build/dist/SPENCER-0.1.0-source.tar.gz
+        strip-components: 1

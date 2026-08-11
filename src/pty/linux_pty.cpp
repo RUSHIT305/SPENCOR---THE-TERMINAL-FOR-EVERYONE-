@@ -32,6 +32,12 @@ namespace {
 [[nodiscard]] bool executable_absolute_path(const std::string& path) {
   return !path.empty() && path.front() == '/' && ::access(path.c_str(), X_OK) == 0;
 }
+
+[[nodiscard]] bool should_spawn_flatpak_host_shell() {
+  const char* const flatpak_id = ::getenv("FLATPAK_ID");
+  return flatpak_id != nullptr && *flatpak_id != '\0' &&
+         ::access("/usr/bin/flatpak-spawn", X_OK) == 0;
+}
 }  // namespace
 
 LinuxPty::LinuxPty(util::UniqueFd master_fd, const pid_t child_pid) noexcept
@@ -108,11 +114,12 @@ LinuxPty LinuxPty::spawn(const SpawnOptions& options) {
     }
 
     const std::string argv0 = options.login_shell ? make_login_argv0(shell) : shell;
-    if (options.login_shell) {
-      ::execl(shell.c_str(), argv0.c_str(), "-i", static_cast<char*>(nullptr));
-    } else {
-      ::execl(shell.c_str(), argv0.c_str(), "-i", static_cast<char*>(nullptr));
+    if (should_spawn_flatpak_host_shell()) {
+      // Flatpak terminals need an explicit portal-mediated host launch to access the user's real shell.
+      ::execl("/usr/bin/flatpak-spawn", "flatpak-spawn", "--host", shell.c_str(), "-i",
+              static_cast<char*>(nullptr));
     }
+    ::execl(shell.c_str(), argv0.c_str(), "-i", static_cast<char*>(nullptr));
     _exit(127);
   }
 
