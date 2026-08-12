@@ -4,9 +4,9 @@
 
 SPENCER is a new native Linux terminal emulator written in modern C++20. It launches the user’s shell in a real POSIX pseudo-terminal, parses a focused subset of ECMA-48/VT-style output through a state machine, maintains a typed terminal grid, and renders that grid in a GTK 4 desktop window.
 
-The current release is **`v0.2.0`, a tested portability release**. It is an actual usable shell terminal, not a mockup, but it does not claim complete xterm, DEC, or Unicode grapheme-cluster compatibility. See the [technical specification](docs/architecture/technical-specification.md), [compatibility notes](docs/terminal-compatibility.md), and [Linux portability matrix](docs/portability.md) for the exact boundary.
+The current release is **`v0.2.1`, a Debian portability correction release**. It is an actual usable shell terminal, not a mockup, but it does not claim complete xterm, DEC, or Unicode grapheme-cluster compatibility. See the [technical specification](docs/architecture/technical-specification.md), [compatibility notes](docs/terminal-compatibility.md), and [Linux portability matrix](docs/portability.md) for the exact boundary.
 
-| Capability | `v0.2.0` status |
+| Capability | `v0.2.1` status |
 |---|---|
 | Linux GTK desktop window | Implemented and startup-smoke-tested under a virtual X display |
 | POSIX PTY and interactive shell | Implemented and integration-tested against `/bin/sh` |
@@ -19,7 +19,7 @@ The current release is **`v0.2.0`, a tested portability release**. It is an actu
 
 ## Build and run
 
-SPENCER targets Linux and requires a C++20 compiler, CMake, Ninja, `pkg-config`, and GTK 4 development files. Ubuntu 24.04 packages that satisfy this are `build-essential cmake ninja-build pkg-config libgtk-4-dev`.
+SPENCER targets Linux and requires a C++20 compiler, CMake, Ninja, `pkg-config`, and GTK 4 development files. Ubuntu 22.04 packages that satisfy this are `build-essential cmake ninja-build pkg-config libgtk-4-dev`.
 
 ```bash
 cmake --preset debug

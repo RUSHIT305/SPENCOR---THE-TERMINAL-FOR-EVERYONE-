@@ -58,7 +58,13 @@ constexpr std::string_view kDefaultTitle = "SPENCER — The Terminal for Everyon
 class SpencerApplication final {
  public:
   int run(const int argc, char** argv) {
-    application_ = gtk_application_new(kApplicationId.data(), G_APPLICATION_DEFAULT_FLAGS);
+    constexpr GApplicationFlags application_flags =
+#if GLIB_CHECK_VERSION(2, 74, 0)
+        G_APPLICATION_DEFAULT_FLAGS;
+#else
+        G_APPLICATION_FLAGS_NONE;
+#endif
+    application_ = gtk_application_new(kApplicationId.data(), application_flags);
     g_signal_connect(application_, "activate", G_CALLBACK(&SpencerApplication::activate_callback), this);
     const int status = g_application_run(G_APPLICATION(application_), argc, argv);
     shutdown();
@@ -103,6 +109,10 @@ class SpencerApplication final {
   static gboolean close_request_callback(GtkWindow*, const gpointer user_data) {
     static_cast<SpencerApplication*>(user_data)->shutdown();
     return FALSE;
+  }
+
+  static void close_error_dialog(GtkButton*, const gpointer user_data) {
+    gtk_window_destroy(GTK_WINDOW(user_data));
   }
 
   void activate() {
@@ -161,12 +171,35 @@ class SpencerApplication final {
   }
 
   void show_error(const std::string_view detail) {
-    GtkAlertDialog* const dialog =
-        gtk_alert_dialog_new("SPENCER could not start the terminal session.");
+    GtkWindow* const dialog = GTK_WINDOW(gtk_window_new());
+    gtk_window_set_title(dialog, "SPENCER error");
+    gtk_window_set_modal(dialog, TRUE);
+    gtk_window_set_transient_for(dialog, window_);
+    gtk_window_set_default_size(dialog, 480, 180);
+
+    GtkWidget* const box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 12);
+    gtk_widget_set_margin_top(box, 24);
+    gtk_widget_set_margin_bottom(box, 24);
+    gtk_widget_set_margin_start(box, 24);
+    gtk_widget_set_margin_end(box, 24);
+    GtkWidget* const heading = gtk_label_new("SPENCER could not start the terminal session.");
+    gtk_label_set_wrap(GTK_LABEL(heading), TRUE);
+    gtk_label_set_xalign(GTK_LABEL(heading), 0.0F);
+    gtk_box_append(GTK_BOX(box), heading);
+
     const std::string detail_copy(detail);
-    gtk_alert_dialog_set_detail(dialog, detail_copy.c_str());
-    gtk_alert_dialog_show(dialog, window_);
-    g_object_unref(dialog);
+    GtkWidget* const detail_label = gtk_label_new(detail_copy.c_str());
+    gtk_label_set_wrap(GTK_LABEL(detail_label), TRUE);
+    gtk_label_set_xalign(GTK_LABEL(detail_label), 0.0F);
+    gtk_box_append(GTK_BOX(box), detail_label);
+
+    GtkWidget* const close_button = gtk_button_new_with_label("Close");
+    gtk_widget_set_halign(close_button, GTK_ALIGN_END);
+    gtk_box_append(GTK_BOX(box), close_button);
+    g_signal_connect(close_button, "clicked", G_CALLBACK(&SpencerApplication::close_error_dialog), dialog);
+
+    gtk_window_set_child(dialog, box);
+    gtk_window_present(dialog);
   }
 
   gboolean read_pty() {

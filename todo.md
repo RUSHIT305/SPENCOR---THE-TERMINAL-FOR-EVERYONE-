@@ -5,3 +5,28 @@
 - [x] Exercise the exact public Flatpak bundle in a clean per-user installation.
 - [x] Build the exact public source archive and run its tests.
 - [x] Audit installation instructions and report compatibility boundaries honestly.
+- [x] Fresh-download every public v0.2.0 release asset again.
+- [x] Validate hashes, file types, ELF architecture, package metadata, and desktop metadata.
+- [x] Rebuild the exact public source archive in clean release and sanitizer configurations.
+- [x] Check shared-library resolution and package dependency metadata.
+- [x] Run bounded GTK/Xvfb smoke tests for Debian, RPM, and AppImage payloads.
+- [x] Reinstall and smoke-test the public Flatpak bundle from a clean per-user state.
+- [x] Reconfirm GitHub CI/release workflow conclusions and report expected headless-display limitations.
+- [x] Install the exact public `.deb` package with the system package manager and launch the installed `spencer` command under the sandbox virtual display.
+- [x] Check whether an Ubuntu 26.04 container/image is available for an isolated test.
+- [x] Install the exact public `.deb` and resolve dependencies in Ubuntu 26.04 if available.
+- [x] Launch the installed Ubuntu 26.04 command under a virtual display and inspect its window.
+- [x] Report whether Ubuntu 26.04 was directly tested or unavailable in this environment.
+- [x] Fresh-download the public v0.2.0 RPM for Fedora testing.
+- [x] Install the exact RPM in an isolated Fedora environment with DNF.
+- [x] Launch the installed Fedora command under a virtual GTK display and inspect its window/configuration.
+- [x] Repair and push a correction only if Fedora exposes a functional defect; no functional defect was found.
+- [ ] Check availability of Fedora 44 repositories or an isolated Fedora 44 rootfs.
+- [ ] Install the exact public v0.2.0 RPM with Fedora 44 package tooling.
+- [ ] Launch the installed Fedora 44 application under a virtual GTK display and inspect its window.
+- [x] Report Fedora 44 as confirmed only if the exact install and launch checks pass.
+- [x] Repair the Debian dependency metadata that blocks Ubuntu 22.04 (`libglib2.0-0t64` and `libstdc++6 >= 13`).
+- [x] Rebuild the corrected `.deb` from an Ubuntu 22.04-compatible baseline.
+- [x] Reinspect corrected dependencies, payload, ELF links, desktop metadata, and checksums.
+- [x] Reinstall and launch the corrected package on Ubuntu 22.04, 24.04, 26.04, Debian 12, and Debian 13 where rootfs bootstrap is available.
+- [ ] Update release automation/docs, commit, push, and publish a corrected release if the retest passes.

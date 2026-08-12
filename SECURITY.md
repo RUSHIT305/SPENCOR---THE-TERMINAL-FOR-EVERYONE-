@@ -2,7 +2,7 @@
 
 ## Supported version
 
-Security fixes are applied to the latest development state on the `main` branch. The current published engineering milestone is `0.2.0`.
+Security fixes are applied to the latest development state on the `main` branch. The current published engineering milestone is `0.2.1`.
 
 ## Reporting a vulnerability
 

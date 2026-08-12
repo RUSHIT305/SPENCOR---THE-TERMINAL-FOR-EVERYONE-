@@ -2,6 +2,19 @@
 
 All notable changes to SPENCER are documented here. Versions reflect verified engineering milestones rather than intended future scope.
 
+## [0.2.1] — 2026-08-12
+
+### Fixed
+
+- Rebuilt the Debian package from an Ubuntu 22.04-compatible baseline so it installs on Jammy without the newer `libglib2.0-0t64` or `libstdc++6 (>= 13)` dependency floor inherited from Ubuntu 24.04.
+- Replaced the newer `G_APPLICATION_DEFAULT_FLAGS` and `GtkAlertDialog` APIs with GTK/GLib APIs available in Ubuntu 22.04’s GTK 4.6/GLib 2.72 stack.
+- Removed development headers and the static core archive from the runtime Debian/RPM payload.
+- Lowered the CMake minimum to 3.22, matching the supported Ubuntu 22.04 toolchain.
+
+### Verification boundary
+
+- v0.2.1 is an x86_64 corrective release tested from an Ubuntu 22.04 packaging baseline. It requires a Linux desktop with GTK 4, GLib, display-server, PTY, and architecture support; universal support for every historical distribution or CPU architecture is not claimed.
+
 ## [0.2.0] — 2026-08-12
 
 ### Added
@@ -35,4 +48,5 @@ All notable changes to SPENCER are documented here. Versions reflect verified en
 - A verified public AppImage, Flatpak, or repository-hosted release artifact.
 
 [0.2.0]: https://github.com/RUSHIT305/SPENCOR---THE-TERMINAL-FOR-EVERYONE-/releases/tag/v0.2.0
+[0.2.1]: https://github.com/RUSHIT305/SPENCOR---THE-TERMINAL-FOR-EVERYONE-/releases/tag/v0.2.1
 [0.1.0]: https://github.com/RUSHIT305/SPENCOR---THE-TERMINAL-FOR-EVERYONE-/compare/main

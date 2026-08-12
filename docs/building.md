@@ -4,7 +4,7 @@ SPENCER currently supports Linux. The project uses CMake presets and Ninja so th
 
 ## Prerequisites
 
-On Ubuntu 24.04 or a compatible Debian-family environment, install the following packages.
+On Ubuntu 22.04 or a compatible Debian-family environment, install the following packages. Ubuntu 22.04 is the Debian packaging baseline because it produces dependencies compatible with newer Ubuntu releases without inheriting newer t64 or compiler-library floors.
 
 ```bash
 sudo apt-get update

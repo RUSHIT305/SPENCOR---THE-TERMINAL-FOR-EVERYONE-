@@ -13,7 +13,7 @@ packaging/rpm/build-rpm.sh build/release
 The helper requires `cpack`, `rpmbuild`, and `rpm`. It prints the package metadata and dependency list after creation. On Fedora/RHEL-family systems, install the resulting file with the distribution package manager so native dependencies can be resolved, for example:
 
 ```sh
-sudo dnf install ./spencer-0.2.0-1*.x86_64.rpm
+sudo dnf install ./spencer-0.2.1-1*.x86_64.rpm
 ```
 
 The RPM artifact is architecture-specific and the first release publishes an x86_64 build. ARM64 and other architectures require separate native builds and are not implied by the x86_64 artifact.

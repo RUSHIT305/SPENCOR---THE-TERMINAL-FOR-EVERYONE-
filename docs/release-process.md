@@ -19,7 +19,7 @@ A release is a verified package of a specific source revision. Do not create a p
 After all gates pass, update `CHANGELOG.md`, commit the release state, and use a semantic version tag.
 
 ```bash
-git tag -a v0.2.0 -m "SPENCER 0.2.0"
+git tag -a v0.2.1 -m "SPENCER 0.2.1 — Debian portability correction"
 git push origin main --tags
 ```
 

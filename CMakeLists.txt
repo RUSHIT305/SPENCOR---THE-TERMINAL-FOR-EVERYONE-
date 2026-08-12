@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.22)
 
 project(SPENCER
-  VERSION 0.2.0
+  VERSION 0.2.1
   DESCRIPTION "The Terminal for Everyone"
   LANGUAGES CXX)
 
@@ -97,12 +97,11 @@ if(BUILD_TESTING)
   add_test(NAME spencer.unit COMMAND spencer_tests)
 endif()
 
-install(TARGETS spencer spencer_core
+install(TARGETS spencer
   EXPORT SPENCERTargets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 install(FILES packaging/linux/io.github.rushit305.spencer.desktop
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
 install(FILES packaging/linux/io.github.rushit305.spencer.metainfo.xml

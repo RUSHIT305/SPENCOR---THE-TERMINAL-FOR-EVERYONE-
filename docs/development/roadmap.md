@@ -12,7 +12,7 @@ This roadmap is an execution record for the new Linux codebase. A milestone is c
 | 6 | Packaging, CI, documentation | Native package validates; CI runs build/test/analysis; docs match behavior | Planned |
 | 7 | Compatibility and release validation | Documented compatibility matrix, sanitizer run, release artifact evidence | Planned |
 
-## `v0.2.0` acceptance criteria
+## `v0.2.1` acceptance criteria
 
 The technical MVP must satisfy all of the following on a Linux test environment:
 

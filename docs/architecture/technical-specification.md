@@ -1,6 +1,6 @@
 # SPENCER Technical Specification
 
-**Status:** Approved implementation baseline for `v0.2.0`
+**Status:** Approved implementation baseline for `v0.2.1`
 **Target:** Linux x86_64, with Linux ARM64 portability designed in but not advertised until it is built and tested.  
 **Scope:** A new native graphical terminal emulator. This specification intentionally does not reuse any earlier implementation.
 
@@ -13,6 +13,7 @@ The initial production-quality milestone is a **technical MVP**, not a claim of 
 | Release | Implemented commitment | Deliberately deferred |
 |---|---|---|
 | `v0.1.0` | Linux GTK window, POSIX PTY, shell discovery, state-machine parser, grid, basic ANSI SGR/colors, resize, scrollback storage, text input, mouse-wheel scroll, graceful exit | Selection, clipboard, full DEC private modes, hyperlinks, mouse reporting, configurable keybindings |
+| `v0.2.1` | Ubuntu 22.04-compatible Debian baseline, GTK 4.6/GLib 2.72 source compatibility, runtime-only native payloads, and corrective release validation | ARM64 and other architectures, full terminal-control conformance |
 | `v0.2.0` | Portability matrix, Debian/RPM/Flatpak/AppImage/source release paths, stable package metadata, and representative distribution CI | ARM64 and other architectures, full terminal-control conformance |
 | `v0.2.0` | Validated configuration, themes, configurable fonts, copy/paste, selection, expanded Unicode handling | Full grapheme-cluster shaping, all xterm extensions |
 | `v0.5.0` | Alternate screen, bracketed paste, title updates, more VT/DEC controls, hyperlink and mouse-reporting support where tested | Complete xterm conformance claim |
@@ -37,7 +38,7 @@ The parser follows a state-machine model consistent with ECMA-48 control-sequenc
 | CTest with in-tree harness | Unit and integration tests | Avoids an early third-party C++ test dependency while keeping CI deterministic | Catch2, GoogleTest | Small dependency surface, simple TAP-like output | Fewer rich assertions | CMake / Linux |
 | CPack DEB/RPM generators | Native package formats | Included in CMake and produce packages for Debian-family and RPM-family systems | Hand-authored distro scripts, Flatpak | Reproducible package metadata and install layout | Native artifacts remain architecture and runtime specific | BSD-3-Clause / Linux |
 
-GTK 4’s renderer is used for the initial native window compositing and drawing path. A custom OpenGL/Vulkan glyph atlas is **not** claimed in `v0.2.0`; introducing one before parser and PTY correctness are proven would raise delivery risk. The renderer boundary keeps that upgrade possible without changing the terminal core.
+GTK 4’s renderer is used for the initial native window compositing and drawing path. A custom OpenGL/Vulkan glyph atlas is **not** claimed in `v0.2.1`; introducing one before parser and PTY correctness are proven would raise delivery risk. The renderer boundary keeps that upgrade possible without changing the terminal core.
 
 ## 4. System architecture
 
