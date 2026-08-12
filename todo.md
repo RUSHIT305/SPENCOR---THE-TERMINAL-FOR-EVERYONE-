@@ -29,4 +29,4 @@
 - [x] Rebuild the corrected `.deb` from an Ubuntu 22.04-compatible baseline.
 - [x] Reinspect corrected dependencies, payload, ELF links, desktop metadata, and checksums.
 - [x] Reinstall and launch the corrected package on Ubuntu 22.04, 24.04, 26.04, Debian 12, and Debian 13 where rootfs bootstrap is available.
-- [ ] Update release automation/docs, commit, push, and publish a corrected release if the retest passes.
+- [x] Update release automation/docs, commit, push, and publish a corrected release if the retest passes.
