@@ -1,6 +1,6 @@
 # Terminal Compatibility
 
-SPENCER `0.1.0` is a usable terminal MVP with a deliberately scoped parser. It does **not** claim general xterm, DEC VT, tmux, editor, or full Unicode conformance. This document is the source of truth for the currently implemented behavior.
+SPENCER `0.2.0` is a usable terminal with a deliberately scoped parser. It does **not** claim general xterm, DEC VT, tmux, editor, or full Unicode conformance. This document is the source of truth for the currently implemented behavior.
 
 ## Implemented and tested behavior
 

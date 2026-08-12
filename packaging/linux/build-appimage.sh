@@ -9,7 +9,8 @@ root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 build_dir="${1:-"${root_dir}/build/release"}"
 appdir="${root_dir}/build/AppDir"
 # The tag/release workflow supplies SPENCER_VERSION for later releases.
-version="${SPENCER_VERSION:-0.1.0}"
+version="${SPENCER_VERSION:-0.2.0}"
+version="${version#v}"
 
 appimagetool="${APPIMAGETOOL:-appimagetool}"
 if ! command -v "${appimagetool}" >/dev/null 2>&1; then

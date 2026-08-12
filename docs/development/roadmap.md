@@ -12,7 +12,7 @@ This roadmap is an execution record for the new Linux codebase. A milestone is c
 | 6 | Packaging, CI, documentation | Native package validates; CI runs build/test/analysis; docs match behavior | Planned |
 | 7 | Compatibility and release validation | Documented compatibility matrix, sanitizer run, release artifact evidence | Planned |
 
-## `v0.1.0` acceptance criteria
+## `v0.2.0` acceptance criteria
 
 The technical MVP must satisfy all of the following on a Linux test environment:
 
@@ -23,7 +23,8 @@ The technical MVP must satisfy all of the following on a Linux test environment:
 5. Keyboard events produce terminal input; window resize updates the PTY’s `winsize`.
 6. Scrollback storage has a finite configuration-defined cap.
 7. Closing the window cleans up the PTY and reaps the shell process.
-8. No unsupported VT feature is described as implemented; known limitations are documented.
+8. Debian and RPM packages are generated and inspected, while Flatpak, AppImage, and source artifacts have reproducible build paths.
+9. No unsupported distribution, architecture, or VT feature is described as implemented; known limitations are documented.
 
 ## Risk register
 

@@ -4,9 +4,9 @@
 
 SPENCER is a new native Linux terminal emulator written in modern C++20. It launches the user’s shell in a real POSIX pseudo-terminal, parses a focused subset of ECMA-48/VT-style output through a state machine, maintains a typed terminal grid, and renders that grid in a GTK 4 desktop window.
 
-The current release is **`v0.1.0`, a tested technical MVP**. It is an actual usable shell terminal, not a mockup, but it does not claim complete xterm, DEC, or Unicode grapheme-cluster compatibility. See the [technical specification](docs/architecture/technical-specification.md) and [compatibility notes](docs/terminal-compatibility.md) for the exact boundary.
+The current release is **`v0.2.0`, a tested portability release**. It is an actual usable shell terminal, not a mockup, but it does not claim complete xterm, DEC, or Unicode grapheme-cluster compatibility. See the [technical specification](docs/architecture/technical-specification.md), [compatibility notes](docs/terminal-compatibility.md), and [Linux portability matrix](docs/portability.md) for the exact boundary.
 
-| Capability | `v0.1.0` status |
+| Capability | `v0.2.0` status |
 |---|---|
 | Linux GTK desktop window | Implemented and startup-smoke-tested under a virtual X display |
 | POSIX PTY and interactive shell | Implemented and integration-tested against `/bin/sh` |
@@ -37,16 +37,17 @@ The first launch writes an editable example configuration file under `$XDG_CONFI
 
 ## Package
 
-A native Debian package is generated from the release build and includes the executable, desktop entry, AppStream metadata, and scalable icon.
+A native Debian package and RPM package are generated from the release build and include the executable, desktop entry, AppStream metadata, and application icons. The same release publishes Flatpak, AppImage, source, and checksum artifacts.
 
 ```bash
 cmake --preset release
 cmake --build --preset release
 ctest --preset release --output-on-failure
 (cd build/release && cpack -G DEB)
+(cd build/release && cpack -G RPM)
 ```
 
-The repository includes an AppImage staging script, but it intentionally refuses to produce an artifact unless `appimagetool` is present. No AppImage is advertised as released without an independently verified build.
+The repository includes guarded AppImage and Flatpak build paths. The release workflow creates only artifacts that pass build, metadata, checksum, and launch checks on representative Linux environments.
 
 ## Architecture
 
@@ -60,7 +61,7 @@ The GTK application owns the state and event loop. A non-blocking PTY file descr
 
 ## Quality checks
 
-The in-tree test suite covers UTF-8 decoding, parser transitions, SGR colors and attributes, grid/cursor/scrollback behavior, configuration fallbacks, and a real PTY shell lifecycle with resize verification. GitHub Actions runs metadata validation, release build, CTest, package generation, and `clang-tidy` on Ubuntu 24.04.
+The in-tree test suite covers UTF-8 decoding, parser transitions, SGR colors and attributes, grid/cursor/scrollback behavior, configuration fallbacks, and a real PTY shell lifecycle with resize verification. GitHub Actions runs representative Ubuntu and Fedora-family builds, metadata validation, CTest, native package generation, portable artifact generation, and `clang-tidy`.
 
 For the exact commands, manual validation scope, and known limitations, consult the documents below.
 
@@ -70,6 +71,7 @@ For the exact commands, manual validation scope, and known limitations, consult 
 | [Build guide](docs/building.md) | Prerequisites and reproducible builds |
 | [Configuration](docs/configuration.md) | All supported settings and safe fallback behavior |
 | [Terminal compatibility](docs/terminal-compatibility.md) | Implemented control sequences and limits |
+| [Linux portability](docs/portability.md) | Distribution matrix, artifact reach, and functional support definition |
 | [Development guide](docs/development.md) | Tests, analysis, code organization, and contribution workflow |
 | [Release process](docs/release-process.md) | Verified packaging and tag/release procedure |
 

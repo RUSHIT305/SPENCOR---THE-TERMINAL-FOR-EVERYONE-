@@ -21,7 +21,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends \
             build-essential cmake ninja-build pkg-config libgtk-4-dev \
             desktop-file-utils appstream appstream-compose flatpak flatpak-builder \
-            elfutils librsvg2-bin curl squashfs-tools xvfb
+            elfutils librsvg2-bin curl squashfs-tools xvfb rpm rpmlint
           flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
           flatpak install --user -y flathub org.gnome.Platform//50 org.gnome.Sdk//50
       - name: Validate Linux metadata
@@ -37,10 +37,14 @@ jobs:
         run: |
           cd build/release
           cpack --config CPackConfig.cmake -G DEB
+      - name: Create RPM package
+        run: |
+          cd build/release
+          cpack --config CPackConfig.cmake -G RPM
       - name: Create AppImage
         env:
           APPIMAGETOOL: ${{ runner.temp }}/appimagetool-x86_64.AppImage
-          SPENCER_VERSION: ${{ github.ref_name == 'v0.1.0' && '0.1.0' || github.ref_name }}
+          SPENCER_VERSION: ${{ github.ref_name }}
         run: |
           curl --fail --location --retry 3 \
             --output "${APPIMAGETOOL}" \
@@ -50,21 +54,85 @@ jobs:
           packaging/linux/build-appimage.sh build/release
       - name: Create Flatpak bundle
         run: |
+          version="${GITHUB_REF_NAME#v}"
           mkdir -p build/dist
-          git archive --format=tar.gz --prefix=SPENCER-0.1.0/ HEAD \
-            -o build/dist/SPENCER-0.1.0-source.tar.gz
+          git archive --format=tar.gz --prefix="SPENCER-${version}/" HEAD \
+            -o build/dist/SPENCER-source.tar.gz
           rm -rf build/flatpak-build build/flatpak-repo .flatpak-builder
           flatpak-builder --user --force-clean --repo=build/flatpak-repo \
             build/flatpak-build packaging/flatpak/io.github.rushit305.spencer.yml
-          flatpak build-bundle build/flatpak-repo build/SPENCER-0.1.0.flatpak \
+          flatpak build-bundle build/flatpak-repo "build/SPENCER-${version}.flatpak" \
             io.github.rushit305.spencer master
+      - name: Smoke test Debian and RPM payloads
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/spencer-deb-root /tmp/spencer-rpm-root
+          dpkg-deb -x build/release/*.deb /tmp/spencer-deb-root
+          rpm2cpio build/release/*.rpm | (cd /tmp/spencer-rpm-root && cpio -idm --quiet)
+          test -x /tmp/spencer-deb-root/usr/bin/spencer
+          test -x /tmp/spencer-rpm-root/usr/bin/spencer
+          run_smoke() {
+            local name="$1"
+            shift
+            local home="/tmp/spencer-release-${name}"
+            rm -rf "${home}"
+            mkdir -p "${home}/.config"
+            set +e
+            timeout --kill-after=1s 8s xvfb-run -a -s '-screen 0 1024x768x24' \
+              env GTK_A11Y=none HOME="${home}" XDG_CONFIG_HOME="${home}/.config" \
+              "$@" >"${home}.log" 2>&1
+            local rc="$?"
+            set -e
+            case "${rc}" in
+              0|124|137|143) ;;
+              *) cat "${home}.log"; return "${rc}" ;;
+            esac
+            test -f "${home}/.config/spencer/config"
+          }
+          run_smoke deb /tmp/spencer-deb-root/usr/bin/spencer
+          run_smoke rpm /tmp/spencer-rpm-root/usr/bin/spencer
+      - name: Smoke test AppImage
+        run: |
+          set -euo pipefail
+          home=/tmp/spencer-release-appimage
+          rm -rf "${home}"
+          mkdir -p "${home}/.config"
+          set +e
+          timeout --kill-after=1s 8s xvfb-run -a -s '-screen 0 1024x768x24' \
+            env GTK_A11Y=none APPIMAGE_EXTRACT_AND_RUN=1 HOME="${home}" \
+            XDG_CONFIG_HOME="${home}/.config" build/SPENCER-*.AppImage >"${home}.log" 2>&1
+          rc="$?"
+          set -e
+          case "${rc}" in
+            0|124|137|143) ;;
+            *) cat "${home}.log"; exit "${rc}" ;;
+          esac
+          test -f "${home}/.config/spencer/config"
+      - name: Smoke test Flatpak
+        run: |
+          set -euo pipefail
+          flatpak install --user -y "build/SPENCER-${GITHUB_REF_NAME#v}.flatpak"
+          flatpak_home="${HOME}/.var/app/io.github.rushit305.spencer"
+          rm -rf "${flatpak_home}/config/spencer"
+          set +e
+          timeout --kill-after=1s 8s dbus-run-session -- xvfb-run -a -s '-screen 0 1024x768x24' \
+            env GTK_A11Y=none flatpak run --user io.github.rushit305.spencer >"/tmp/spencer-release-flatpak.log" 2>&1
+          rc="$?"
+          set -e
+          case "${rc}" in
+            0|124|137|143) ;;
+            *) cat /tmp/spencer-release-flatpak.log; exit "${rc}" ;;
+          esac
+          test -f "${flatpak_home}/config/spencer/config"
       - name: Assemble release ledger
         run: |
+          version="${GITHUB_REF_NAME#v}"
           mkdir -p build/release-assets
           cp build/release/*.deb build/release-assets/
+          cp build/release/*.rpm build/release-assets/
           cp build/SPENCER-*.AppImage build/release-assets/
           cp build/SPENCER-*.flatpak build/release-assets/
-          cp build/dist/SPENCER-0.1.0-source.tar.gz build/release-assets/
+          cp build/dist/SPENCER-source.tar.gz "build/release-assets/SPENCER-${version}-source.tar.gz"
           cd build/release-assets
           sha256sum * > SHA256SUMS.txt
       - name: Publish GitHub release

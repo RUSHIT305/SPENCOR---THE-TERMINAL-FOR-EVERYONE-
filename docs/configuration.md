@@ -25,4 +25,4 @@ scrollback_lines = 10000
 padding = 8
 ```
 
-Custom color palettes, opacity, keybinding remapping, configurable cursor styles, and custom themes are not parsed in `v0.1.0`. The application uses its built-in dark palette. Do not add unsupported keys expecting behavior; they will be ignored safely.
+Custom color palettes, opacity, keybinding remapping, configurable cursor styles, and custom themes are not parsed in `v0.2.0`. The application uses its built-in dark palette. Do not add unsupported keys expecting behavior; they will be ignored safely.

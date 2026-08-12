@@ -10,7 +10,7 @@ On Ubuntu 24.04 or a compatible Debian-family environment, install the following
 sudo apt-get update
 sudo apt-get install -y \
   build-essential cmake ninja-build pkg-config libgtk-4-dev \
-  desktop-file-utils appstream appstream-compose clang-tidy
+  desktop-file-utils appstream appstream-compose clang-tidy rpm rpmlint
 ```
 
 | Dependency | Used for |
@@ -20,6 +20,7 @@ sudo apt-get install -y \
 | GTK 4 development files | Native window, event loop, Pango/Cairo text drawing, desktop integration |
 | `desktop-file-utils` and AppStream | Linux metadata validation |
 | `clang-tidy` | Optional static analysis matching CI |
+| `rpm`, `rpmbuild`, and `rpmlint` | RPM package generation and inspection |
 
 ## Debug build
 
@@ -34,16 +35,18 @@ ctest --preset debug --output-on-failure
 
 ## Release build and package
 
-The release preset uses `RelWithDebInfo` and retains strict warnings while disabling sanitizers. Build and test before generating the Debian package.
+The release preset uses `RelWithDebInfo` and retains strict warnings while disabling sanitizers. Build and test before generating native packages.
 
 ```bash
 cmake --preset release
 cmake --build --preset release
 ctest --preset release --output-on-failure
-(cd build/release && cpack -G DEB)
+(cd build/release && cpack -G DEB && cpack -G RPM)
 ```
 
-The generated `.deb` is placed in `build/release/`. Validate installed metadata before packaging with the following commands.
+The generated `.deb` and `.rpm` are placed in `build/release/`. The RPM records native GTK/GLib shared-library requirements for RPM package managers; it is not interchangeable with the Debian package.
+
+To build the portable artifacts, install Flatpak and the GNOME 50 runtime/SDK, then use the guarded helpers from the release workflow. The AppImage helper requires the checksum-verified `appimagetool`; the Flatpak manifest consumes `build/dist/SPENCER-source.tar.gz` and exports a single-file bundle.
 
 ```bash
 desktop-file-validate packaging/linux/io.github.rushit305.spencer.desktop

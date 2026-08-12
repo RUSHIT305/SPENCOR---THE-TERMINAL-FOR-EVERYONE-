@@ -257,13 +257,20 @@ std::string LinuxPty::resolve_shell(std::string requested_shell) {
       requested_shell = environment_shell;
     }
   }
-  if (!executable_absolute_path(requested_shell)) {
-    requested_shell = "/bin/sh";
+  if (executable_absolute_path(requested_shell)) {
+    return requested_shell;
   }
-  if (!executable_absolute_path(requested_shell)) {
-    throw std::runtime_error("No executable shell is available at $SHELL or /bin/sh");
+
+  // Merged-/usr systems and minimal distributions can expose the POSIX shell
+  // at different conventional paths. Probe only absolute, known-safe paths.
+  constexpr std::array<std::string_view, 4> fallback_shells{
+      "/bin/sh", "/usr/bin/sh", "/bin/bash", "/usr/bin/bash"};
+  for (const std::string_view fallback : fallback_shells) {
+    if (executable_absolute_path(std::string(fallback))) {
+      return std::string(fallback);
+    }
   }
-  return requested_shell;
+  throw std::runtime_error("No executable shell is available from $SHELL or the standard Linux shell paths");
 }
 
 std::string LinuxPty::make_login_argv0(const std::string_view shell) {

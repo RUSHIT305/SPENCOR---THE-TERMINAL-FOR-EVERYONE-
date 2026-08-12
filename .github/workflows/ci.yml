@@ -21,7 +21,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             build-essential cmake ninja-build pkg-config libgtk-4-dev \
-            desktop-file-utils appstream appstream-compose
+            desktop-file-utils appstream appstream-compose rpm rpmlint
       - name: Validate Linux application metadata
         run: |
           desktop-file-validate packaging/linux/io.github.rushit305.spencer.desktop
@@ -35,12 +35,47 @@ jobs:
       - name: Build Debian package
         working-directory: build/release
         run: cpack -G DEB
-      - name: Upload verified package
+      - name: Build RPM package
+        working-directory: build/release
+        run: cpack -G RPM
+      - name: Inspect native packages
+        run: |
+          rpm -qip build/release/*.rpm
+          rpm -qp --requires build/release/*.rpm
+          dpkg-deb --info build/release/*.deb
+      - name: Upload verified native packages
         uses: actions/upload-artifact@v4
         with:
-          name: spencer-debian-package
-          path: build/release/*.deb
+          name: spencer-native-packages
+          path: |
+            build/release/*.deb
+            build/release/*.rpm
           if-no-files-found: error
+
+  fedora-build-test:
+    name: Fedora-family build and PTY test
+    runs-on: ubuntu-24.04
+    container: fedora:latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Install Fedora build dependencies
+        run: |
+          dnf -y install gcc-c++ cmake ninja-build pkgconf-pkg-config gtk4-devel \
+            desktop-file-utils libappstream-glib rpm-build
+      - name: Configure release build
+        run: cmake --preset release
+      - name: Build and test
+        run: |
+          cmake --build --preset release
+          ctest --preset release --output-on-failure
+      - name: Build RPM
+        working-directory: build/release
+        run: cpack -G RPM
+      - name: Inspect RPM
+        run: |
+          rpm -qip build/release/*.rpm
+          rpm -qp --requires build/release/*.rpm
 
   static-analysis:
     name: Static analysis
