@@ -37,4 +37,20 @@ Removing the package leaves the user configuration file in place. Delete `$XDG_C
 
 ## Portable artifacts
 
-The release workflow publishes an AppImage and a Flatpak bundle alongside the native packages. The AppImage is intended for modern x86_64 Linux systems with a working graphical session. The Flatpak requires Flatpak and the pinned GNOME runtime. Verify the published `SHA256SUMS.txt` before running a downloaded artifact.
+The release workflow publishes an AppImage and a Flatpak bundle alongside the native packages. The AppImage is intended for modern x86_64 Linux systems with a working graphical session. Downloaded files commonly do not retain executable permission, so make the AppImage executable before launching it:
+
+```bash
+chmod +x SPENCER-0.2.0-linux-x86_64.AppImage
+./SPENCER-0.2.0-linux-x86_64.AppImage
+```
+
+The Flatpak bundle requires Flatpak plus the pinned GNOME 50 runtime. On a system without that runtime, install it from Flathub before installing the bundle:
+
+```bash
+flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install --user flathub org.gnome.Platform//50
+flatpak install --user ./SPENCER-0.2.0.flatpak
+flatpak run --user io.github.rushit305.spencer
+```
+
+Verify the published `SHA256SUMS.txt` before running any downloaded artifact.

@@ -1,0 +1,7 @@
+- [x] Download the exact public v0.2.0 assets from GitHub Release.
+- [x] Verify the published SHA256SUMS.txt against every downloaded artifact.
+- [x] Exercise the exact public .deb and .rpm payloads in isolated filesystem roots.
+- [x] Exercise the exact public AppImage with normal executable-permission handling.
+- [x] Exercise the exact public Flatpak bundle in a clean per-user installation.
+- [x] Build the exact public source archive and run its tests.
+- [x] Audit installation instructions and report compatibility boundaries honestly.
